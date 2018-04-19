@@ -1,6 +1,6 @@
-﻿namespace CartolaUI
+﻿namespace CartolaUI.Entities
 {
-	public class UsersInfo
+	public class RodadaInfo
 	{
 		public string nome { get; set; }
 		public string nome_cartola { get; set; }
@@ -11,7 +11,7 @@
 		public string slug { get; set; }
 		public string pontuacaoParcial { get; set; }
 
-		public UsersInfo(string nome, string nome_cartola, string patrimonio, Ranking1 ranking, Pontos1 pontos, string slug)
+		public RodadaInfo(string nome, string nome_cartola, string patrimonio, Ranking1 ranking, Pontos1 pontos, string slug)
 		{
 			this.nome = nome;
 			this.nome_cartola = nome_cartola;

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net;
+using CartolaUI.Entities;
 
-namespace CartolaUI
+namespace CartolaUI.Controllers
 {
 
 	public class TimeAPI
@@ -35,10 +33,10 @@ namespace CartolaUI
 		public Ranking1 ranking { get; set; }
 		public Pontos1 pontos { get; set; }
 
-		public TimeDTO(string nome, string nomeCartola, string patrimonio, Ranking1 ranking, Pontos1 pontos)
+		public TimeDTO(string nome, string nome_cartola, string patrimonio, Ranking1 ranking, Pontos1 pontos)
 		{
 			this.nome = nome;
-			nome_cartola = nomeCartola;
+			this.nome_cartola = nome_cartola;
 			this.patrimonio = patrimonio;
 			this.ranking = ranking;
 			this.pontos = pontos;

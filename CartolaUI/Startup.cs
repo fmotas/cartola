@@ -1,15 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
+using CartolaUI.Data;
+using CartolaUI.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceStack.OrmLite;
 
 namespace CartolaUI
 {
-    public class Startup
+	public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -22,7 +23,10 @@ namespace CartolaUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-        }
+	        services.AddDbContext<Brasileirao2018DbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Brasileirao2018")));
+
+	        
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

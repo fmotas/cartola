@@ -1,4 +1,4 @@
-﻿namespace CartolaUI
+﻿namespace CartolaUI.Entities
 {
 	public class TimeInfo
 	{

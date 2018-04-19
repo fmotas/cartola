@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CartolaUI.TimeDTO>
+﻿@using CartolaUI.Entities
+@model IEnumerable<CartolaUI.Entities.RodadaInfoDb>
 
 @{
 	ViewData["Title"] = "Index";
@@ -45,27 +46,27 @@
 					@Html.DisplayFor(modelItem => item.patrimonio)
 				</td>
 				<td>
-					@if (item.pontos.rodada == null && item.ranking.rodada != null)
+					@if (item.pontos == null && item.ranking != null)
 					{
-						@Html.DisplayFor(modelItem => item.pontos.mongolou)
+						@Html.DisplayFor(modelItem => item.mongolou)
 					}
-					else if (item.pontos.rodada == null && item.ranking.rodada == null)
+					else if (item.pontos == null && item.ranking == null)
 					{
-						@Html.DisplayFor(modelItem => item.pontos.naoparticipou)
+						@Html.DisplayFor(modelItem => item.naoparticipou)
 					}
 					else
 					{
-						@Html.DisplayFor(modelItem => item.pontos.rodada)
+						@Html.DisplayFor(modelItem => item.pontos)
 					}
 				</td>
 				<td>
-					@if (item.pontos.rodada == null && item.ranking.rodada == null)
+					@if (item.pontos == null && item.ranking == null)
 					{
-						@Html.DisplayFor(modelItem => item.ranking.naoparticipou)
+						@Html.DisplayFor(modelItem => item.naoparticipou)
 					}
 					else
 					{
-						@Html.DisplayFor(modelItem => item.ranking.rodada)
+						@Html.DisplayFor(modelItem => item.ranking)
 					}
 				</td>
 			</tr>
