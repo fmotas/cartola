@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CartolaUI.TimeDTO>
+
+@{
+	ViewData["Title"] = "IndexMes";
+	Layout = "~/Pages/_Layout.cshtml";
+}
+
+<br />
+<br />
+<font size="20"><center><strong>Abril</strong></center></font>
+<br />
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayName("Nome")
+			</th>
+			<th>
+				@Html.DisplayName("Nome no Cartola")
+			</th>
+			<th>
+				@Html.DisplayName("Patrimônio")
+			</th>
+			<th>
+				@Html.DisplayName("Pontos no Mês")
+			</th>
+			<th>
+				@Html.DisplayName("Ranking no Mês")
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome_cartola)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.patrimonio)
+				</td>
+				<td>
+					@if (item.pontos.mes == null)
+					{
+						@Html.DisplayFor(modelItem => item.pontos.nada)
+					}
+					else
+					{
+						@Html.DisplayFor(modelItem => item.pontos.mes)
+
+					}
+				</td>
+				<td>
+					@if (item.ranking.mes == null)
+					{
+						@Html.DisplayFor(modelItem => item.ranking.nada)
+					}
+					else
+					{
+						@Html.DisplayFor(modelItem => item.ranking.mes)
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

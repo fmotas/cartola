@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CartolaUI.TimeDTO>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Pages/_Layout.cshtml";
+}
+
+<br />
+<br />
+<font size="20"><center><strong>Rodada 1</strong></center></font>
+<br />
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayName("Nome")
+			</th>
+			<th>
+				@Html.DisplayName("Nome no Cartola")
+			</th>
+			<th>
+				@Html.DisplayName("Patrimônio")
+			</th>
+			<th>
+				@Html.DisplayName("Pontos na Rodada")
+			</th>
+			<th>
+				@Html.DisplayName("Ranking na Rodada")
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome_cartola)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.patrimonio)
+				</td>
+				<td>
+					@if (item.pontos.rodada == null && item.ranking.rodada != null)
+					{
+						@Html.DisplayFor(modelItem => item.pontos.mongolou)
+					}
+					else if (item.pontos.rodada == null && item.ranking.rodada == null)
+					{
+						@Html.DisplayFor(modelItem => item.pontos.naoparticipou)
+					}
+					else
+					{
+						@Html.DisplayFor(modelItem => item.pontos.rodada)
+					}
+				</td>
+				<td>
+					@if (item.pontos.rodada == null && item.ranking.rodada == null)
+					{
+						@Html.DisplayFor(modelItem => item.ranking.naoparticipou)
+					}
+					else
+					{
+						@Html.DisplayFor(modelItem => item.ranking.rodada)
+					}
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

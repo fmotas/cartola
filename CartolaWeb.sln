@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartolaWeb", "CartolaWeb\CartolaWeb.csproj", "{665C2900-1389-44FA-B638-2040B6923E9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartolaUI", "CartolaUI\CartolaUI.csproj", "{7BE8FEC2-5EB1-49FE-AE38-AFC0E6BB42EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{665C2900-1389-44FA-B638-2040B6923E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{665C2900-1389-44FA-B638-2040B6923E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{665C2900-1389-44FA-B638-2040B6923E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{665C2900-1389-44FA-B638-2040B6923E9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE8FEC2-5EB1-49FE-AE38-AFC0E6BB42EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE8FEC2-5EB1-49FE-AE38-AFC0E6BB42EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE8FEC2-5EB1-49FE-AE38-AFC0E6BB42EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE8FEC2-5EB1-49FE-AE38-AFC0E6BB42EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40147CBB-7417-40C7-8C96-86D76EB8CCED}
+	EndGlobalSection
+EndGlobal
