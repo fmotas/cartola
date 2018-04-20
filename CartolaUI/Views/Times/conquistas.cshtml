@@ -1,5 +1,5 @@
 ﻿@using CartolaUI.Entities
-@model IEnumerable<ConquistasInfo>
+@model IEnumerable<LideresLanternas>
 
 @{
 	ViewData["Title"] = "Index";
@@ -37,25 +37,28 @@
 		</tr>
 	</thead>
 	<tbody>
+
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.nome_cartola_real)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.rodadas_como_lider)
-				</td>
-				<td></td>
-				<td>
-					@Html.DisplayFor(modelItem => item.nome_cartola_real)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.rodadas_como_lanterna)
-				</td>
-			</tr>
+			for (int i = 0; i < item.Lideres.ToArray().Length; i++)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Lideres.OrderByDescending(it=>it.rodadas_como_lider).ToArray()[i].nome_cartola_real)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Lideres.OrderByDescending(it => it.rodadas_como_lider).ToArray()[i].rodadas_como_lider)
+					</td>
+					<td></td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Lanternas.OrderByDescending(it => it.rodadas_como_lanterna).ToArray()[i].nome_cartola_real)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Lanternas.OrderByDescending(it => it.rodadas_como_lanterna).ToArray()[i].rodadas_como_lanterna)
+					</td>
+				</tr>
+			}
 		}
-
 
 	</tbody>
 </table>

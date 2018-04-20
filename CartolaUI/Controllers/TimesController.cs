@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using Microsoft.Extensions.Options;
 using ServiceStack.OrmLite;
 
@@ -51,9 +52,12 @@ namespace CartolaUI.Controllers
 		public IActionResult Conquistas()
 		{
 			var sqlAchievements = new SqlAchievementsData(config);
-			var conquistas = sqlAchievements.GetConquistasInfo();
+			var conquistas = new List<ConquistasInfo>(sqlAchievements.GetConquistasInfo());
 
-			return View(conquistas);
+			var lideres_lanternas = new List<LideresLanternas>();
+			lideres_lanternas.Add(new LideresLanternas(conquistas));
+
+			return View(lideres_lanternas);
 		}
 
 		[HttpGet("rodadasvalidas")]
