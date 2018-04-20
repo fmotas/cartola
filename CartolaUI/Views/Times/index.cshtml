@@ -1,5 +1,5 @@
 ﻿@using CartolaUI.Entities
-@model IEnumerable<CartolaUI.Entities.RodadaInfoDb>
+@model IEnumerable<RodadaInfoDb>
 
 @{
 	ViewData["Title"] = "Index";
@@ -46,11 +46,11 @@
 					@Html.DisplayFor(modelItem => item.patrimonio)
 				</td>
 				<td>
-					@if (item.pontos == null && item.ranking != null)
+					@if (String.IsNullOrWhiteSpace(item.pontos) && !String.IsNullOrWhiteSpace(item.ranking))
 					{
 						@Html.DisplayFor(modelItem => item.mongolou)
 					}
-					else if (item.pontos == null && item.ranking == null)
+					else if (String.IsNullOrWhiteSpace(item.pontos) && String.IsNullOrWhiteSpace(item.ranking))
 					{
 						@Html.DisplayFor(modelItem => item.naoparticipou)
 					}
@@ -60,7 +60,7 @@
 					}
 				</td>
 				<td>
-					@if (item.pontos == null && item.ranking == null)
+					@if (String.IsNullOrWhiteSpace(item.pontos) && String.IsNullOrWhiteSpace(item.ranking))
 					{
 						@Html.DisplayFor(modelItem => item.naoparticipou)
 					}

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System;
 using CartolaUI.Data;
 using CartolaUI.Entities;
 using CartolaUI.Services;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using ServiceStack.OrmLite;
 
 namespace CartolaUI.Controllers
 {
@@ -22,23 +24,11 @@ namespace CartolaUI.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var dto = new List<TimeDTO>();
-			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString(client.BaseAddress);
+			var sqlRodada = new SqlRodadaData(_context);
+			sqlRodada.UpdateRodadaAtual();
+			var info = sqlRodada.GetInfoRodadaAtual();
 
-			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
-
-			var rodadaInfoDb = new List<RodadaInfoDb>();
-
-			foreach (var time in dto)
-			{
-				rodadaInfoDb.Add(new RodadaInfoDb(time));
-			}
-
-			var ae = new SqlRodadaData(_context);
-			ae.Update();
-
-			return View(rodadaInfoDb);
+			return View(info);
 		}
 
 		[HttpGet("mes")]
@@ -50,6 +40,15 @@ namespace CartolaUI.Controllers
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 			return View(dto);
+		}
+
+		[HttpGet("/api/admin/finalizarrodada/{id}")]
+		public IActionResult FinalizarRodada(int id)
+		{
+			var sqlRodada = new SqlRodadaData(_context);
+			sqlRodada.UpdateRodadaAtual();
+			sqlRodada.UpdateRodadaId(id);
+			return Redirect("/api/times");
 		}
 	}
 }

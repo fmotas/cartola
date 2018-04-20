@@ -5,7 +5,7 @@ namespace CartolaUI.Services
 {
 	public interface IRodadaData
 	{
-		List<RodadaInfoDb> GetInfo();
-		void Update();
+		IEnumerable<RodadaInfoDb> GetInfoRodadaAtual();
+		void UpdateRodadaAtual();
 	}
 }

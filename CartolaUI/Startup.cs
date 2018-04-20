@@ -24,8 +24,6 @@ namespace CartolaUI
         {
             services.AddMvc();
 	        services.AddDbContext<Brasileirao2018DbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Brasileirao2018")));
-
-	        
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

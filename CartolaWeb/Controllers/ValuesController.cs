@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -52,13 +52,14 @@ namespace CartolaWeb.Controllers
 				{
 					foreach (var atleta in escalados.atletas)
 					{
-						var aux2 = 0.00;
-						var aux = double.TryParse(
-							GetPontuacaoParcial(content,
-								atleta.atleta_id,
-								atleta.apelido
-							), out aux2);
-						pontosParciais += Math.Round(aux2, 2);
+						var parse = double.TryParse(GetPontuacaoParcial(content,
+							atleta.atleta_id,
+							atleta.apelido
+						), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var pontos);
+						if (parse)
+						{
+							pontosParciais = Math.Round(pontos, 2);
+						}
 					}
 
 
@@ -68,7 +69,7 @@ namespace CartolaWeb.Controllers
 						{
 							if (pontosParciais != 0.00)
 							{
-								time.pontuacaoParcial = pontosParciais.ToString();
+								time.pontuacaoParcial = pontosParciais.ToString(CultureInfo.InvariantCulture);
 								break;
 							}
 							else
@@ -77,18 +78,12 @@ namespace CartolaWeb.Controllers
 							}
 						}
 					}
-
-					//Times.Where(time => time.nome_cartola == escalados.DonodoTime).First().pontuacaoParcial = pontosParciais.ToString("N2");
-
 				}
 				catch (Exception ex)
 				{
 					Times.First(time => time.nome_cartola == escalados.DonodoTime).pontuacaoParcial = "Mongolei e não escalei.";
 				}
-
 			}
-			
-
 			return Times.ToArray();
 		}
 
@@ -157,7 +152,7 @@ namespace CartolaWeb.Controllers
 
 		private static async Task GetAuthenticationToken()
 		{
-			var httpNew = (HttpWebRequest) WebRequest.Create("https://login.globo.com/api/authentication");
+			var httpNew = (HttpWebRequest)WebRequest.Create("https://login.globo.com/api/authentication");
 			httpNew.ContentType = "application/json;charset=UTF-8";
 			httpNew.UserAgent =
 				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36";
@@ -189,7 +184,7 @@ namespace CartolaWeb.Controllers
 				var responseContent = await response.Content.ReadAsStringAsync();
 				Globals.Token = JsonConvert.DeserializeObject<AuthenticationInfo>(responseContent).glbId;
 			}
-			
+
 		}
 
 
@@ -205,16 +200,16 @@ namespace CartolaWeb.Controllers
 
 				if (pontuacao != null)
 				{
-					return string.Format("{0:0.00}", pontuacao);
+					return pontuacao;
 				}
 				else
 				{
-					return "0";
+					return "0.00";
 				}
 			}
 			catch
 			{
-				return "0";
+				return "0.00";
 			}
 		}
 	}

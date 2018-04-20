@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using CartolaUI.Controllers;
 using Microsoft.WindowsAzure.Storage.Table;
+using ServiceStack;
 
 namespace CartolaUI.Entities
 {
@@ -24,6 +25,20 @@ namespace CartolaUI.Entities
 		public string pontuacaoParcial { get; set; }
 		public string naoparticipou = "Não participou dessa rodada.";
 		public string mongolou = "Mongolei e não escalei meu time nessa rodada.";
+
+		public RodadaInfoDb()
+		{
+				
+		}
+
+		public RodadaInfoDb(string nome, string nomeCartola, string patrimonio, string ranking, string pontos)
+		{
+			this.nome = nome;
+			nome_cartola = nomeCartola;
+			this.patrimonio = patrimonio;
+			this.ranking = ranking;
+			this.pontos = pontos;
+		}
 
 		public RodadaInfoDb(TimeDTO rodadaInfo)
 		{
