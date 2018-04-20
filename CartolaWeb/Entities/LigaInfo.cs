@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace CartolaWeb
+﻿namespace CartolaWeb.Entities
 {
 
 	public class LigaInfo

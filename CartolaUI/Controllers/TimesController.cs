@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using ServiceStack.OrmLite;
 
 namespace CartolaUI.Controllers
@@ -15,13 +16,17 @@ namespace CartolaUI.Controllers
 	{
 		TimeAPI _timeAPI = new TimeAPI();
 		private Brasileirao2018DbContext _context;
+		private readonly IOptions<Startup.MyConfig> config;
+		private readonly string connectionString;
 
-		public TimesController(Brasileirao2018DbContext context)
+		public TimesController(Brasileirao2018DbContext context, IOptions<Startup.MyConfig> config)
 		{
 			_context = context;
+			this.config = config;
+			this.connectionString = config.Value.ConnectionStrings.Brasileirao2018;
 		}
 
-		[HttpGet]
+		[HttpGet("/")]
 		public IActionResult Index()
 		{
 			var sqlRodada = new SqlRodadaData(_context);
@@ -41,6 +46,25 @@ namespace CartolaUI.Controllers
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 			return View(dto);
 		}
+
+		[HttpGet("/lideres-lanternas")]
+		public IActionResult Conquistas()
+		{
+			var sqlAchievements = new SqlAchievementsData(config);
+			var conquistas = sqlAchievements.GetConquistasInfo();
+
+			return View(conquistas);
+		}
+
+		[HttpGet("rodadasvalidas")]
+		public IEnumerable<string> GetRodadasValidas()
+		{
+			var sqlAchievements = new SqlAchievementsData(config);
+			var listaRodadasValidas = sqlAchievements.GetRodadasValidas();
+
+			return listaRodadasValidas.ToArray();
+		}
+
 
 		[HttpGet("/api/admin/finalizarrodada/{id}")]
 		public IActionResult FinalizarRodada(int id)

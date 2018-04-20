@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CartolaWeb
+namespace CartolaWeb.Entities
 {
 	public class AuthenticationInfo
 	{

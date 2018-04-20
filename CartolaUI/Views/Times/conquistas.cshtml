@@ -1,0 +1,61 @@
+﻿@using CartolaUI.Entities
+@model IEnumerable<ConquistasInfo>
+
+@{
+	ViewData["Title"] = "Index";
+	Layout = "~/Pages/_Layout.cshtml";
+}
+
+<br />
+<br />
+<font size="20"><center><strong>Líderes / Lanternas</strong></center></font>
+<br />
+
+<style type="text/css">
+	.table th, .table td {
+		text-align: center;
+	}
+</style>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayName("Nome")
+			</th>
+			<th>
+				@Html.DisplayName("Rodadas como Líder")
+			</th>
+			<th>
+			</th>
+			<th>
+				@Html.DisplayName("Nome")
+			</th>
+			<th>
+				@Html.DisplayName("Rodadas Como Lanterna")
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome_cartola_real)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.rodadas_como_lider)
+				</td>
+				<td></td>
+				<td>
+					@Html.DisplayFor(modelItem => item.nome_cartola_real)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.rodadas_como_lanterna)
+				</td>
+			</tr>
+		}
+
+
+	</tbody>
+</table>

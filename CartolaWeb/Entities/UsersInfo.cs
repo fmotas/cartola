@@ -1,4 +1,4 @@
-﻿namespace CartolaWeb
+﻿namespace CartolaWeb.Entities
 {
 	public class UsersInfo
 	{
