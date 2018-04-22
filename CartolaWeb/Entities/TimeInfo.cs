@@ -5,6 +5,7 @@
 		public Atleta[] atletas { get; set; }
 
 		public string DonodoTime { get; set; }
+		public int capitao_id { get; set; }
 	}
 
 	public class Atleta
@@ -26,3 +27,6 @@
 	}
 
 }
+
+
+

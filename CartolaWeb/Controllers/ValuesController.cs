@@ -51,21 +51,28 @@ namespace CartolaWeb.Controllers
 					break;
 				}
 
-				
-					foreach (var atleta in escalados.atletas)
+
+				foreach (var atleta in escalados.atletas)
+				{
+					var parse = double.TryParse(GetPontuacaoParcial(content,
+						atleta.atleta_id,
+						atleta.apelido
+					), NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
+					if (parse)
 					{
-						var parse = double.TryParse(GetPontuacaoParcial(content,
-							atleta.atleta_id,
-							atleta.apelido
-						),NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
-						if (parse)
+						if (atleta.atleta_id != escalados.capitao_id)
 						{
 							pontosParciais += Math.Round(pontos, 2);
 						}
+						else
+						{
+							pontosParciais += 2 * Math.Round(pontos, 2);
+						}
 					}
+				}
 
 
-					Times.First(t => t.nome_cartola == escalados.DonodoTime).pontuacaoParcial = pontosParciais.ToString("N2");
+				Times.First(t => t.nome_cartola == escalados.DonodoTime).pontuacaoParcial = pontosParciais.ToString("N2");
 			}
 			return Times.ToArray();
 		}
@@ -73,7 +80,7 @@ namespace CartolaWeb.Controllers
 		private static List<TimeInfo> GetEscalacao(List<UsersInfo> Times)
 		{
 			var ListEscalacao = new List<TimeInfo>();
-			foreach(var time in Times)
+			foreach (var time in Times)
 			{
 				var http = (HttpWebRequest)WebRequest.Create("https://api.cartolafc.globo.com/time/slug/" + time.slug);
 				http.ContentType = "application/json;charset=UTF-8";
