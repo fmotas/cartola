@@ -74,5 +74,14 @@ namespace CartolaUI.Controllers
 			sqlRodada.UpdateRodadaId(id);
 			return Redirect("/api/times");
 		}
+
+		[HttpGet("/expulsoes")]
+		public IActionResult Expulsoes()
+		{
+			var sqlAchievements = new SqlExpulsoesData(config);
+			var expulsoes = new List<ExpulsoesInfoDb>(sqlAchievements.GetExpulsoesInfo());
+
+			return View("expulsoes", expulsoes);
+		}
 	}
 }

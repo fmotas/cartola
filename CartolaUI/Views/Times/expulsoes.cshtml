@@ -1,0 +1,48 @@
+﻿@using CartolaUI.Entities
+@model IEnumerable<ExpulsoesInfoDb>
+
+@{
+	ViewData["Title"] = "Líderes / Lanternas";
+	Layout = "~/Pages/_Layout.cshtml";
+}
+
+<br />
+<br />
+<font size="20"><center><strong>Lista da Expulsos do Grupo</strong></center></font>
+<br />
+
+<style type="text/css">
+	.table th, .table td {
+		text-align: center;
+	}
+</style>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayName("Nome")
+			</th>
+			<th>
+				@Html.DisplayName("Quantidade de Expulsões")
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var item in Model)
+		{
+			var qtd = item.quantidade_de_expulsoes.ToString();
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.nome)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => qtd)
+			</td>
+		</tr>
+
+		}
+
+	</tbody>
+</table>

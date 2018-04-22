@@ -135,6 +135,23 @@ namespace CartolaUI.Services
 			return campeonatoInfoDb;
 		}
 
+		//public IEnumerable<ExpulsoesInfoDb> GetApiExpulsoesInfo()
+		//{
+		//	var dto = new List<ExpulsoesInfoDb>();
+		//	var client = _timeAPI.InitializeClient();
+		//	var str = client.DownloadString(client.BaseAddress);
+
+		//	dto = JsonConvert.DeserializeObject<List<ExpulsoesInfoDb>>(str);
+
+		//	var expulsoesInfoDb = new List<ExpulsoesInfoDb>();
+
+		//	foreach (var time in dto)
+		//	{
+		//		expulsoesInfoDb.Add(new ExpulsoesInfoDb(time));
+		//	}
+		//	return expulsoesInfoDb;
+		//}
+
 		public void UpdateRodadaAtual()
 		{
 			var table = GetApiInfoRodada();

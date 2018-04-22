@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using CartolaUI.Entities;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using CartolaUI.Entities;
-using Microsoft.Extensions.Options;
 
 namespace CartolaUI.Services
 {
