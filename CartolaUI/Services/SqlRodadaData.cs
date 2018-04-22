@@ -54,7 +54,7 @@ namespace CartolaUI.Services
 				while (reader.Read())
 				{
 					rodadalist.Add(new RodadaInfoDb(reader["id"].ToString(), reader["nome"].ToString(), reader["nome_cartola"].ToString(), reader["pontuacaoParcial"].ToString().Replace(',','.'),
-						reader["patrimonio"].ToString(), reader["ranking"].ToString(), reader["pontos"].ToString()));
+						reader["patrimonio"].ToString(), reader["ranking"].ToString(), reader["pontos"].ToString(), reader["slug"].ToString()));
 				}
 			}
 
@@ -105,7 +105,7 @@ namespace CartolaUI.Services
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString(client.BaseAddress);
+			var str = client.DownloadString("http://localhost:53894/api/values");
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 

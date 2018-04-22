@@ -30,7 +30,7 @@ namespace CartolaUI.Entities
 				
 		}
 
-		public RodadaInfoDb(string id, string nome, string nome_cartola,string pontuacaoParcial, string patrimonio, string ranking, string pontos)
+		public RodadaInfoDb(string id, string nome, string nome_cartola,string pontuacaoParcial, string patrimonio, string ranking, string pontos, string slug)
 		{
 			this.Id = long.Parse(id);
 			this.nome = nome;
@@ -39,6 +39,7 @@ namespace CartolaUI.Entities
 			this.patrimonio = patrimonio;
 			this.ranking = ranking;
 			this.pontos = pontos;
+			this.slug = slug;
 		}
 
 		public RodadaInfoDb(TimeDTO rodadaInfo)
@@ -49,6 +50,7 @@ namespace CartolaUI.Entities
 			patrimonio = rodadaInfo.patrimonio;
 			ranking = rodadaInfo.ranking.rodada;
 			pontos = rodadaInfo.pontos.rodada;
+			slug = rodadaInfo.slug;
 		}
 	}
 }

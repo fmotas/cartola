@@ -44,6 +44,7 @@ namespace CartolaWeb.Controllers
 			foreach (var escalados in Escalacao)
 			{
 				var pontosParciais = 0.00;
+				var jogadoresAtivos = 0;
 
 				if (escalados.atletas == null)
 				{
@@ -68,11 +69,15 @@ namespace CartolaWeb.Controllers
 						{
 							pontosParciais += 2 * Math.Round(pontos, 2);
 						}
+
+						jogadoresAtivos++;
 					}
 				}
 
 
 				Times.First(t => t.nome_cartola == escalados.DonodoTime).pontuacaoParcial = pontosParciais.ToString("N2");
+				Times.First(t => t.nome_cartola == escalados.DonodoTime).slug = jogadoresAtivos + "/12";
+
 			}
 			return Times.ToArray();
 		}

@@ -21,6 +21,7 @@ namespace CartolaUI.Controllers
 		public string nome { get; set; }
 		public string nome_cartola { get; set; }
 		public string pontuacaoParcial { get; set; }
+		public string slug { get; set; }
 
 		public string patrimonio
 		{
@@ -32,7 +33,7 @@ namespace CartolaUI.Controllers
 		public Ranking1 ranking { get; set; }
 		public Pontos1 pontos { get; set; }
 
-		public TimeDTO(string nome, string nome_cartola, string pontuacaoParcial, string patrimonio, Ranking1 ranking,
+		public TimeDTO(string nome, string nome_cartola, string pontuacaoParcial,string slug, string patrimonio, Ranking1 ranking,
 			Pontos1 pontos)
 		{
 			this.nome = nome;
@@ -41,6 +42,7 @@ namespace CartolaUI.Controllers
 			this.patrimonio = patrimonio;
 			this.ranking = ranking;
 			this.pontos = pontos;
+			this.slug = slug;
 		}
 	}
 }

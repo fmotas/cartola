@@ -28,7 +28,7 @@
 				@Html.DisplayName("Nome no Cartola")
 			</th>
 			<th>
-				@Html.DisplayName("Patrimônio")
+				@Html.DisplayName("Jogadores Pontuados")
 			</th>
 			<th>
 				@Html.DisplayName("Pontuação Parcial")
@@ -49,7 +49,14 @@
 					@Html.DisplayFor(modelItem => item.nome_cartola)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.patrimonio)
+					@if (item.slug.Contains("/12"))
+					{
+						@Html.DisplayFor(modelItem => item.slug)
+					}
+					else
+					{
+						@Html.DisplayFor(modelItem => item.mongolou)
+					}
 				</td>
 				<td>
 					@if (String.IsNullOrWhiteSpace(item.pontuacaoParcial) && !String.IsNullOrWhiteSpace(item.ranking))
