@@ -28,7 +28,7 @@ namespace CartolaUI.Services
 
 			foreach (var time in rodadalist)
 			{
-				var parse = double.TryParse(time.pontos, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var pontos);
+				var parse = double.TryParse(time.pontos, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
 				if (parse)
 				{
 					time.pontos = Math.Round(pontos, 2).ToString(CultureInfo.InvariantCulture);
@@ -53,7 +53,7 @@ namespace CartolaUI.Services
 			{
 				while (reader.Read())
 				{
-					rodadalist.Add(new RodadaInfoDb(reader["nome"].ToString(), reader["nome_cartola"].ToString(),
+					rodadalist.Add(new RodadaInfoDb(reader["id"].ToString(), reader["nome"].ToString(), reader["nome_cartola"].ToString(), reader["pontuacaoParcial"].ToString().Replace(',','.'),
 						reader["patrimonio"].ToString(), reader["ranking"].ToString(), reader["pontos"].ToString()));
 				}
 			}
@@ -101,11 +101,11 @@ namespace CartolaUI.Services
 		}
 
 
-		public List<RodadaInfoDb> GetApiInfo()
+		public IEnumerable<RodadaInfoDb> GetApiInfo()
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString(client.BaseAddress);
+			var str = client.DownloadString("http://localhost:53894/api/values");
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 
@@ -122,6 +122,20 @@ namespace CartolaUI.Services
 		{
 			var table = GetApiInfo();
 			var i = 1;
+			foreach (var row in table)
+			{
+				var pontparc = row.pontuacaoParcial;
+				if (pontparc == "Mongolei e não escalei meu time nessa rodada.")
+				{
+					pontparc = "-999999999";
+				}
+				var pontosbool=long.TryParse(pontparc, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
+				if (pontosbool)
+				{
+					row.Id = pontos;
+				}
+			}
+			table = table.OrderByDescending(tb => tb.Id);
 			foreach (var row in table)
 			{
 				row.Id = i;

@@ -33,7 +33,6 @@ namespace CartolaUI.Controllers
 			var sqlRodada = new SqlRodadaData(_context);
 			sqlRodada.UpdateRodadaAtual();
 			var info = sqlRodada.GetInfoRodadaAtual();
-
 			return View(info);
 		}
 

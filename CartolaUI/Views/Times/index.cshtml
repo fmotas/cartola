@@ -3,7 +3,7 @@
 
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Rodada Atual";
 	Layout = "~/Pages/_Layout.cshtml";
 }
 
@@ -31,10 +31,10 @@
 				@Html.DisplayName("Patrimônio")
 			</th>
 			<th>
-				@Html.DisplayName("Pontos na Rodada")
+				@Html.DisplayName("Pontuação Parcial")
 			</th>
 			<th>
-				@Html.DisplayName("Ranking na Rodada")
+				@Html.DisplayName("Ranking Parcial na Rodada")
 			</th>
 		</tr>
 	</thead>
@@ -52,27 +52,27 @@
 					@Html.DisplayFor(modelItem => item.patrimonio)
 				</td>
 				<td>
-					@if (String.IsNullOrWhiteSpace(item.pontos) && !String.IsNullOrWhiteSpace(item.ranking))
+					@if (String.IsNullOrWhiteSpace(item.pontuacaoParcial) && !String.IsNullOrWhiteSpace(item.ranking))
 					{
 						@Html.DisplayFor(modelItem => item.mongolou)
 					}
-					else if (String.IsNullOrWhiteSpace(item.pontos) && String.IsNullOrWhiteSpace(item.ranking))
+					else if (String.IsNullOrWhiteSpace(item.pontuacaoParcial) && String.IsNullOrWhiteSpace(item.ranking))
 					{
 						@Html.DisplayFor(modelItem => item.naoparticipou)
 					}
 					else
 					{
-						@Html.DisplayFor(modelItem => item.pontos)
+						@Html.DisplayFor(modelItem => item.pontuacaoParcial)
 					}
 				</td>
 				<td>
-					@if (String.IsNullOrWhiteSpace(item.pontos) && String.IsNullOrWhiteSpace(item.ranking))
+					@if (item.pontuacaoParcial == item.mongolou)
 					{
-						@Html.DisplayFor(modelItem => item.naoparticipou)
+						@Html.DisplayFor(modelItem => item.mongolou)
 					}
 					else
 					{
-						@Html.DisplayFor(modelItem => item.ranking)
+						@Html.DisplayFor(modelItem => item.Id)
 					}
 				</td>
 			</tr>

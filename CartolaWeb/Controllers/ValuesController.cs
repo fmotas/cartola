@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CartolaWeb.Entities;
 
@@ -43,47 +45,27 @@ namespace CartolaWeb.Controllers
 			{
 				var pontosParciais = 0.00;
 
-
 				if (escalados.atletas == null)
 				{
+					Times.First(time => time.nome_cartola == escalados.DonodoTime).pontuacaoParcial = "Mongolei e não escalei meu time nessa rodada.";
 					break;
 				}
 
-				try
-				{
+				
 					foreach (var atleta in escalados.atletas)
 					{
 						var parse = double.TryParse(GetPontuacaoParcial(content,
 							atleta.atleta_id,
 							atleta.apelido
-						), NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var pontos);
+						),NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
 						if (parse)
 						{
-							pontosParciais = Math.Round(pontos, 2);
+							pontosParciais += Math.Round(pontos, 2);
 						}
 					}
 
 
-					foreach (var time in Times.ToArray())
-					{
-						if (time.nome_cartola == escalados.DonodoTime)
-						{
-							if (pontosParciais != 0.00)
-							{
-								time.pontuacaoParcial = pontosParciais.ToString(CultureInfo.InvariantCulture);
-								break;
-							}
-							else
-							{
-								time.pontuacaoParcial = "0.00";
-							}
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Times.First(time => time.nome_cartola == escalados.DonodoTime).pontuacaoParcial = "Mongolei e não escalei.";
-				}
+					Times.First(t => t.nome_cartola == escalados.DonodoTime).pontuacaoParcial = pontosParciais.ToString("N2");
 			}
 			return Times.ToArray();
 		}
@@ -91,7 +73,7 @@ namespace CartolaWeb.Controllers
 		private static List<TimeInfo> GetEscalacao(List<UsersInfo> Times)
 		{
 			var ListEscalacao = new List<TimeInfo>();
-			Parallel.ForEach(Times, (time) =>
+			foreach(var time in Times)
 			{
 				var http = (HttpWebRequest)WebRequest.Create("https://api.cartolafc.globo.com/time/slug/" + time.slug);
 				http.ContentType = "application/json;charset=UTF-8";
@@ -110,7 +92,7 @@ namespace CartolaWeb.Controllers
 				var escalacao = JsonConvert.DeserializeObject<TimeInfo>(content);
 				escalacao.DonodoTime = time.nome_cartola;
 				ListEscalacao.Add(escalacao);
-			});
+			};
 			return ListEscalacao;
 		}
 
@@ -203,10 +185,8 @@ namespace CartolaWeb.Controllers
 				{
 					return pontuacao;
 				}
-				else
-				{
-					return "0.00";
-				}
+
+				return "0.00";
 			}
 			catch
 			{
