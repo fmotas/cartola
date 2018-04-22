@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CartolaWeb.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -9,9 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using CartolaWeb.Entities;
 
 
 namespace CartolaWeb.Controllers
@@ -49,10 +47,10 @@ namespace CartolaWeb.Controllers
 				if (escalados.atletas == null)
 				{
 					Times.First(time => time.nome_cartola == escalados.DonodoTime).pontuacaoParcial = "Mongolei e não escalei meu time nessa rodada.";
+					Times.First(t => t.nome_cartola == escalados.DonodoTime).slug = jogadoresAtivos + "/12";
 					break;
 				}
-
-
+				
 				foreach (var atleta in escalados.atletas)
 				{
 					var parse = double.TryParse(GetPontuacaoParcial(content,
@@ -61,16 +59,19 @@ namespace CartolaWeb.Controllers
 					), NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
 					if (parse)
 					{
-						if (atleta.atleta_id != escalados.capitao_id)
+						if (!(atleta.posicao_id == 6 && pontos == 0))
 						{
-							pontosParciais += Math.Round(pontos, 2);
+							if (atleta.atleta_id != escalados.capitao_id)
+							{
+								pontosParciais += Math.Round(pontos, 2);
+								jogadoresAtivos++;
+							}
+							else
+							{
+								pontosParciais += 2 * Math.Round(pontos, 2);
+								jogadoresAtivos++;
+							}
 						}
-						else
-						{
-							pontosParciais += 2 * Math.Round(pontos, 2);
-						}
-
-						jogadoresAtivos++;
 					}
 				}
 

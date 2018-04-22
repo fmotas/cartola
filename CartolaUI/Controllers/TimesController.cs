@@ -3,24 +3,25 @@ using CartolaUI.Data;
 using CartolaUI.Entities;
 using CartolaUI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using ServiceStack.OrmLite;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
+using ServiceStack;
 
 namespace CartolaUI.Controllers
 {
-	[Route("api/[controller]")]
+	[Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
 	public class TimesController : Controller
 	{
 		TimeAPI _timeAPI = new TimeAPI();
 		private Brasileirao2018DbContext _context;
-		private readonly IOptions<Startup.MyConfig> config;
+		private readonly Microsoft.Extensions.Options.IOptions<Startup.MyConfig> config;
 		private readonly string connectionString;
 
-		public TimesController(Brasileirao2018DbContext context, IOptions<Startup.MyConfig> config)
+		public TimesController(Brasileirao2018DbContext context, Microsoft.Extensions.Options.IOptions<Startup.MyConfig> config)
 		{
 			_context = context;
 			this.config = config;
@@ -28,10 +29,15 @@ namespace CartolaUI.Controllers
 		}
 
 		[HttpGet("/rodadaatual")]
-		public IActionResult RodadaAtual()
+		public async Task<IActionResult> RodadaAtual()
 		{
 			var sqlRodada = new SqlRodadaData(_context);
-			sqlRodada.UpdateRodadaAtual();
+			if (Math.Abs(DateTime.Now.Second - Globals.UpdateSecond) > 15)
+			{
+				Globals.UpdateSecond = DateTime.Now.Second;
+				sqlRodada.UpdateRodadaAtual().Wait();
+				Globals.UpdateSecond = DateTime.Now.Second;
+			}
 			var info = sqlRodada.GetInfoRodadaAtual();
 			return View("rodadaatual", info);
 		}
@@ -40,8 +46,13 @@ namespace CartolaUI.Controllers
 		public IActionResult Index()
 		{
 			var sqlRodada = new SqlRodadaData(_context);
-			var info = sqlRodada.GetApiInfoCampeonato();
-			return View("campeonato",info);
+			if (DateTime.Today.Day.ToString() != Globals.UpdateDay)
+			{
+				sqlRodada.UpdateCampeonato().Wait();
+				Globals.UpdateDay = DateTime.Today.Day.ToString();
+			}
+			var info = sqlRodada.GetInfoCampeonato();
+			return View("campeonato", info);
 		}
 
 		[HttpGet("/lideres-lanternas")]
@@ -50,8 +61,7 @@ namespace CartolaUI.Controllers
 			var sqlAchievements = new SqlAchievementsData(config);
 			var conquistas = new List<ConquistasInfo>(sqlAchievements.GetConquistasInfo());
 
-			var lideres_lanternas = new List<LideresLanternas>();
-			lideres_lanternas.Add(new LideresLanternas(conquistas));
+			var lideres_lanternas = new List<LideresLanternas> { new LideresLanternas(conquistas) };
 
 			return View("conquistas", lideres_lanternas);
 		}
@@ -67,21 +77,33 @@ namespace CartolaUI.Controllers
 
 
 		[HttpGet("/api/admin/finalizarrodada/{id}")]
-		public IActionResult FinalizarRodada(int id)
+		public async Task<IActionResult> FinalizarRodada(int id)
 		{
 			var sqlRodada = new SqlRodadaData(_context);
-			sqlRodada.UpdateRodadaAtual();
+			await sqlRodada.UpdateRodadaAtual();
 			sqlRodada.UpdateRodadaId(id);
-			return Redirect("/api/times");
+			return Redirect("/");
 		}
 
 		[HttpGet("/expulsoes")]
 		public IActionResult Expulsoes()
 		{
-			var sqlAchievements = new SqlExpulsoesData(config);
-			var expulsoes = new List<ExpulsoesInfoDb>(sqlAchievements.GetExpulsoesInfo());
-
+			var sqlExpulsoes = new SqlExpulsoesData(config);
+			var expulsoes = new List<ExpulsoesInfoDb>(sqlExpulsoes.GetExpulsoesInfo());
 			return View("expulsoes", expulsoes);
+		}
+
+		[HttpGet("/francine/expulsar/{nome}")]
+		public string Expulsar(string nome)
+		{
+			var sqlExpulsoes = new SqlExpulsoesData(config);
+			return sqlExpulsoes.Expulsar(nome); 
+		}
+		[HttpGet("/francine/desexpulsar/{nome}")]
+		public string Desexpulsar(string nome)
+		{
+			var sqlExpulsoes = new SqlExpulsoesData(config);
+			return sqlExpulsoes.Desexpulsar(nome);
 		}
 	}
 }

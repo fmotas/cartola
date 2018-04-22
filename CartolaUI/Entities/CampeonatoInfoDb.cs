@@ -17,11 +17,17 @@ namespace CartolaUI.Entities
 		public string naoparticipou = "Não participou dessa rodada.";
 		public string mongolou = "Mongolei e não escalei meu time nessa rodada.";
 
-		public CampeonatoInfoDb()
+		public CampeonatoInfoDb(string id, string nome, string nome_cartola, string patrimonio, string ranking, string pontos, string slug)
 		{
-
+			this.Id = long.Parse(id);
+			this.nome = nome;
+			this.nome_cartola = nome_cartola;
+			this.patrimonio = patrimonio;
+			this.ranking = ranking;
+			this.pontos = pontos;
+			this.slug = slug;
 		}
-		
+
 
 		public CampeonatoInfoDb(TimeDTO rodadaInfo)
 		{

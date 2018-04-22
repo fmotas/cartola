@@ -1,11 +1,11 @@
 body {
 	padding-top: 50px;
 	padding-bottom: 20px;
-	background-color: #ffba7f;
+	background-color: #fff;
 }
 
 .navbar-inverse {
-	background-color: #12b1d5;
+	background-color: #e3672a;
 }
 
 .navbar-inverse .navbar-brand {
@@ -23,7 +23,7 @@ body {
 .body-content {
 	padding-left: 15px;
 	padding-right: 15px;
-	background-color: #ffba7f;
+	background-color: #fff;
 }
 
 /* Carousel */

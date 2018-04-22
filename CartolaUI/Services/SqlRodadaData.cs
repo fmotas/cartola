@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CartolaUI.Services
 {
@@ -38,7 +39,7 @@ namespace CartolaUI.Services
 			return rodadalist;
 		}
 
-		private static List<RodadaInfoDb> RodadaInfo(string rodada)
+		private static  List<RodadaInfoDb> RodadaInfo(string rodada)
 		{
 			SqlConnection conn =
 				new SqlConnection(
@@ -101,11 +102,11 @@ namespace CartolaUI.Services
 		}
 
 
-		public IEnumerable<RodadaInfoDb> GetApiInfoRodada()
+		public async Task<IEnumerable<RodadaInfoDb>> GetApiInfoRodada()
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString(client.BaseAddress);
+			var str = await client.DownloadStringTaskAsync(client.BaseAddress);
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 
@@ -132,29 +133,99 @@ namespace CartolaUI.Services
 			{
 				campeonatoInfoDb.Add(new CampeonatoInfoDb(time));
 			}
+
+			//foreach (var time in campeonatoInfoDb)
+			//{
+			//	var parse = double.TryParse(time.pontos, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
+			//	if (parse)
+			//	{
+			//		time.pontos = Math.Round(pontos, 2).ToString(CultureInfo.InvariantCulture);
+			//	}
+			//}
+
 			return campeonatoInfoDb;
 		}
 
-		//public IEnumerable<ExpulsoesInfoDb> GetApiExpulsoesInfo()
-		//{
-		//	var dto = new List<ExpulsoesInfoDb>();
-		//	var client = _timeAPI.InitializeClient();
-		//	var str = client.DownloadString(client.BaseAddress);
-
-		//	dto = JsonConvert.DeserializeObject<List<ExpulsoesInfoDb>>(str);
-
-		//	var expulsoesInfoDb = new List<ExpulsoesInfoDb>();
-
-		//	foreach (var time in dto)
-		//	{
-		//		expulsoesInfoDb.Add(new ExpulsoesInfoDb(time));
-		//	}
-		//	return expulsoesInfoDb;
-		//}
-
-		public void UpdateRodadaAtual()
+		public IEnumerable<CampeonatoInfoDb> GetInfoCampeonato()
 		{
-			var table = GetApiInfoRodada();
+
+			var rodadalist = CampeonatoInfo();
+
+			foreach (var time in rodadalist)
+			{
+				var parse = double.TryParse(time.pontos, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
+				if (parse)
+				{
+					time.pontos = Math.Round(pontos, 2).ToString(CultureInfo.InvariantCulture);
+				}
+			}
+
+			return rodadalist;
+		}
+
+		private static List<CampeonatoInfoDb> CampeonatoInfo()
+		{
+			SqlConnection conn =
+				new SqlConnection(
+					"Data Source=SQL7001.site4now.net;Initial Catalog=DB_A39CB1_fernandokardel;MultipleActiveResultSets=true;User Id=DB_A39CB1_fernandokardel_admin;Password=asdf1234;");
+			conn.Open();
+
+			var rodadalist = new List<CampeonatoInfoDb>();
+
+			SqlCommand command = new SqlCommand("SELECT * FROM [DB_A39CB1_fernandokardel].[dbo].[Campeonato]", conn);
+			// int result = command.ExecuteNonQuery();
+			using (SqlDataReader reader = command.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					rodadalist.Add(new CampeonatoInfoDb(reader["id"].ToString(), reader["nome"].ToString(), reader["nome_cartola"].ToString(),
+						reader["patrimonio"].ToString(), reader["ranking"].ToString(), reader["pontos"].ToString(), reader["slug"].ToString()));
+				}
+			}
+
+			conn.Close();
+			return rodadalist;
+		}
+
+
+
+		public async Task UpdateCampeonato()
+		{
+			string cmdString = "UPDATE [DB_A39CB1_fernandokardel].[dbo].[Campeonato] set patrimonio = @val1, ranking = @val2, pontos = @val3 WHERE nome = @val4";
+			string connString = "Data Source=SQL7001.site4now.net;Initial Catalog=DB_A39CB1_fernandokardel;MultipleActiveResultSets=true;User Id=DB_A39CB1_fernandokardel_admin;Password=asdf1234;";
+			var times = GetApiInfoCampeonato();
+			using (SqlConnection conn = new SqlConnection(connString))
+			{
+				using (SqlCommand comm = new SqlCommand())
+				{
+					comm.Connection = conn;
+					comm.CommandText = cmdString;
+					conn.Open();
+					foreach (var time in times)
+					{
+						comm.Parameters.Clear();
+						comm.Parameters.AddWithValue("@val1", time.patrimonio);
+						comm.Parameters.AddWithValue("@val2", time.ranking);
+						comm.Parameters.AddWithValue("@val3", time.pontos);
+						comm.Parameters.AddWithValue("@val4", time.nome);
+						try
+						{
+							comm.ExecuteNonQuery();
+						}
+						catch (SqlException e)
+						{
+							// do something with the exception
+							// don't hide it
+						}
+					}
+				}
+			}
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task UpdateRodadaAtual()
+		{
+			var table = await GetApiInfoRodada();
 			var i = 1;
 			foreach (var row in table)
 			{
@@ -178,7 +249,7 @@ namespace CartolaUI.Services
 				_context.RodadaAtual.Update(row);
 				i++;
 			}
-			_context.SaveChanges();
+			await _context.SaveChangesAsync();
 		}
 
 		public void UpdateRodadaId(int id)
