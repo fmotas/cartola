@@ -105,7 +105,7 @@ namespace CartolaUI.Services
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString("http://localhost:53894/api/values");
+			var str = client.DownloadString(client.BaseAddress);
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 
