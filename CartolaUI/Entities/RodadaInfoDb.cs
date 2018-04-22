@@ -1,11 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using CartolaUI.Controllers;
-using Microsoft.WindowsAzure.Storage.Table;
-using ServiceStack;
+﻿using CartolaUI.Controllers;
 
 namespace CartolaUI.Entities
 {

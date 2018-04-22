@@ -1,14 +1,15 @@
 ﻿@using CartolaUI.Controllers
-@model IEnumerable<CartolaUI.Controllers.TimeDTO>
+@model IEnumerable<CartolaUI.Entities.CampeonatoInfoDb>
+
 
 @{
-	ViewData["Title"] = "IndexMes";
+	ViewData["Title"] = "Campeonato";
 	Layout = "~/Pages/_Layout.cshtml";
 }
 
 <br />
 <br />
-<font size="20"><center><strong>Abril</strong></center></font>
+<font size="20"><center><strong>Campeonato</strong></center></font>
 <br />
 
 <table class="table">
@@ -24,10 +25,10 @@
 				@Html.DisplayName("Patrimônio")
 			</th>
 			<th>
-				@Html.DisplayName("Pontos no Mês")
+				@Html.DisplayName("Pontos")
 			</th>
 			<th>
-				@Html.DisplayName("Ranking no Mês")
+				@Html.DisplayName("Ranking")
 			</th>
 		</tr>
 	</thead>
@@ -45,25 +46,10 @@
 					@Html.DisplayFor(modelItem => item.patrimonio)
 				</td>
 				<td>
-					@if (item.pontos.mes == null)
-					{
-						@Html.DisplayFor(modelItem => item.pontos.nada)
-					}
-					else
-					{
-						@Html.DisplayFor(modelItem => item.pontos.mes)
-
-					}
+					@Html.DisplayFor(modelItem => item.pontos)
 				</td>
 				<td>
-					@if (item.ranking.mes == null)
-					{
-						@Html.DisplayFor(modelItem => item.ranking.nada)
-					}
-					else
-					{
-						@Html.DisplayFor(modelItem => item.ranking.mes)
-					}
+					@Html.DisplayFor(modelItem => item.ranking)
 				</td>
 			</tr>
 		}

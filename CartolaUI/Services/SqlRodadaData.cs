@@ -101,7 +101,7 @@ namespace CartolaUI.Services
 		}
 
 
-		public IEnumerable<RodadaInfoDb> GetApiInfo()
+		public IEnumerable<RodadaInfoDb> GetApiInfoRodada()
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
@@ -118,9 +118,26 @@ namespace CartolaUI.Services
 			return rodadaInfoDb;
 		}
 
+		public IEnumerable<CampeonatoInfoDb> GetApiInfoCampeonato()
+		{
+			var dto = new List<TimeDTO>();
+			var client = _timeAPI.InitializeClient();
+			var str = client.DownloadString(client.BaseAddress);
+
+			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
+
+			var campeonatoInfoDb = new List<CampeonatoInfoDb>();
+
+			foreach (var time in dto)
+			{
+				campeonatoInfoDb.Add(new CampeonatoInfoDb(time));
+			}
+			return campeonatoInfoDb;
+		}
+
 		public void UpdateRodadaAtual()
 		{
-			var table = GetApiInfo();
+			var table = GetApiInfoRodada();
 			var i = 1;
 			foreach (var row in table)
 			{

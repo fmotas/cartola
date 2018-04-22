@@ -27,24 +27,21 @@ namespace CartolaUI.Controllers
 			this.connectionString = config.Value.ConnectionStrings.Brasileirao2018;
 		}
 
-		[HttpGet("/")]
-		public IActionResult Index()
+		[HttpGet("/rodadaatual")]
+		public IActionResult RodadaAtual()
 		{
 			var sqlRodada = new SqlRodadaData(_context);
 			sqlRodada.UpdateRodadaAtual();
 			var info = sqlRodada.GetInfoRodadaAtual();
-			return View(info);
+			return View("rodadaatual", info);
 		}
 
-		[HttpGet("mes")]
-		public IActionResult IndexMes()
+		[HttpGet("/")]
+		public IActionResult Index()
 		{
-			List<TimeDTO> dto = new List<TimeDTO>();
-			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString(client.BaseAddress);
-
-			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
-			return View(dto);
+			var sqlRodada = new SqlRodadaData(_context);
+			var info = sqlRodada.GetApiInfoCampeonato();
+			return View("campeonato",info);
 		}
 
 		[HttpGet("/lideres-lanternas")]
@@ -56,7 +53,7 @@ namespace CartolaUI.Controllers
 			var lideres_lanternas = new List<LideresLanternas>();
 			lideres_lanternas.Add(new LideresLanternas(conquistas));
 
-			return View(lideres_lanternas);
+			return View("conquistas", lideres_lanternas);
 		}
 
 		[HttpGet("rodadasvalidas")]
