@@ -11,8 +11,6 @@ namespace CartolaUI.Controllers
 		{
 			var client = new WebClient();
 			client.BaseAddress = _apiBaseURI;
-
-
 			return client;
 		}
 	}

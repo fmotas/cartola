@@ -105,7 +105,7 @@ namespace CartolaUI.Services
 		{
 			var dto = new List<TimeDTO>();
 			var client = _timeAPI.InitializeClient();
-			var str = client.DownloadString("http://localhost:53894/api/values");
+			var str = client.DownloadString(client.BaseAddress);
 
 			dto = JsonConvert.DeserializeObject<List<TimeDTO>>(str);
 
@@ -129,10 +129,12 @@ namespace CartolaUI.Services
 				{
 					pontparc = "-999999999";
 				}
-				var pontosbool=long.TryParse(pontparc, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
+				var pontosbool= double.TryParse(pontparc, NumberStyles.Number, CultureInfo.InvariantCulture, out var pontos);
 				if (pontosbool)
 				{
-					row.Id = pontos;
+
+					row.Id = Convert.ToInt64(pontos);
+
 				}
 			}
 			table = table.OrderByDescending(tb => tb.Id);
