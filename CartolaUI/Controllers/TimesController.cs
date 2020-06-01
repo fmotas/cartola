@@ -1,15 +1,10 @@
-﻿using System;
-using CartolaUI.Data;
+﻿using CartolaUI.Data;
 using CartolaUI.Entities;
 using CartolaUI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
-using ServiceStack;
 
 namespace CartolaUI.Controllers
 {
