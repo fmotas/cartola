@@ -1,28 +1,43 @@
 # Cartola Score Tracker (.NET)
 
-A simple .NET console application to track scores from Cartola, a Brazilian fantasy soccer game.
+A simple .NET console application to track Cartola (Brazilian fantasy soccer game) scores directly from the terminal.
 
-The project provides a lightweight way to follow fantasy soccer scores directly from the terminal, without dashboards or complex user interfaces.
-
-This README uses a terminal GIF generated with **TermGIFforge** to visually document how the application is executed.
+This project provides a lightweight way to follow fantasy soccer scores without dashboards or complex user interfaces.
 
 ---
 
-## 🎯 What is this?
+## What is this?
 
 Cartola Score Tracker is a small command-line project focused on:
 
-- Tracking Cartola scores
+- Tracking Cartola fantasy scores
 - Displaying round results in the terminal
 - Allowing quick score checks during match rounds
 
-The project is intentionally simple and designed for terminal usage.
+The project is intentionally simple and designed to be executed from the command line.
 
 ---
 
-## ▶️ How to run
+## How to run
 
 From the project root, run:
 
-```bash
 dotnet run
+
+---
+
+## Example execution
+
+![Cartola Run Example](docs/assets/cartola-run.gif)
+
+---
+
+## Why terminal GIFs?
+
+This project uses terminal GIFs generated with TermGIFforge to visually document how users interact with the CLI, making the documentation clearer without videos or screenshots.
+
+---
+
+## License
+
+MIT License
