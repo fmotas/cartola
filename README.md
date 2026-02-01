@@ -28,7 +28,7 @@ dotnet run
 
 ## Example execution
 
-![Cartola Run Example](docs/assets/cartola-run.gif)
+![Cartola Run Example](docs/assets/how-to-run.gif)
 
 ---
 
